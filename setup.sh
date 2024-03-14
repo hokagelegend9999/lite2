@@ -4,7 +4,7 @@ biji=`date +"%Y-%m-%d" -d "$dateFromServer"`
 #########################
 
 BURIQ () {
-    curl -sS https://raw.githubusercontent.com/hokagelegend2023/ijinpremium/main/LiteIp > /root/tmp
+    curl -sS https://raw.githubusercontent.com/hokagelegend9999/ijin/main/liteip > /root/tmp
     data=( `cat /root/tmp | grep -E "^### " | awk '{print $2}'` )
     for user in "${data[@]}"
     do
@@ -22,7 +22,7 @@ BURIQ () {
 }
 # https://raw.githubusercontent.com/hokagelegend2023/ijinpremium/main/LiteIp 
 MYIP=$(curl -sS ipv4.icanhazip.com)
-Name=$(curl -sS https://raw.githubusercontent.com/hokagelegend2023/ijinpremium/main/LiteIp | grep $MYIP | awk '{print $2}')
+Name=$(curl -sS https://raw.githubusercontent.com/hokagelegend9999/ijin/main/liteip | grep $MYIP | awk '{print $2}')
 echo $Name > /usr/local/etc/.$Name.ini
 CekOne=$(cat /usr/local/etc/.$Name.ini)
 
@@ -39,7 +39,7 @@ fi
 
 PERMISSION () {
     MYIP=$(curl -sS ipv4.icanhazip.com)
-    IZIN=$(curl -sS https://raw.githubusercontent.com/hokagelegend2023/ijinpremium/main/LiteIp | awk '{print $4}' | grep $MYIP)
+    IZIN=$(curl -sS https://raw.githubusercontent.com/hokagelegend9999/ijin/main/liteip | awk '{print $4}' | grep $MYIP)
     if [ "$MYIP" = "$IZIN" ]; then
     Bloman
     else
@@ -167,15 +167,15 @@ echo -e "$BGreen      Install SSH Websocket           $NC"
 echo -e "\e[33m-----------------------------------\033[0m"
 sleep 0.5
 clear
-wget https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/ssh/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
+wget https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
 #Instal Xray
 echo -e "\e[33m-----------------------------------\033[0m"
 echo -e "$BGreen          Install XRAY              $NC"
 echo -e "\e[33m-----------------------------------\033[0m"
 sleep 0.5
 clear
-wget https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/xray/ins-xray.sh && chmod +x ins-xray.sh && ./ins-xray.sh
-wget https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/websocket/insshws.sh && chmod +x insshws.sh && ./insshws.sh
+wget https://raw.githubusercontent.com/hokagelegend9999/lite2/main/xray/ins-xray.sh && chmod +x ins-xray.sh && ./ins-xray.sh
+wget https://github.com/hokagelegend9999/lite2/blob/main/websocket/insshws.sh && chmod +x insshws.sh && ./insshws.sh
 clear
 #install ssh UDP SLOW DNS
 echo -e "\e[33m-----------------------------------\033[0m"
@@ -223,7 +223,7 @@ if [ ! -f "/etc/log-create-shadowsocks.log" ]; then
 echo "Log Shadowsocks Account " > /etc/log-create-shadowsocks.log
 fi
 history -c
-serverV=$( curl -sS https://raw.githubusercontent.com/hokagelegend2023/ijinpremium/main/lite  )
+serverV=$( curl -sS https://raw.githubusercontent.com/hokagelegend9999/ijin/main/liteip  )
 echo $serverV > /opt/lite
 aureb=$(cat /home/re_otm)
 b=11
