@@ -175,7 +175,7 @@ echo -e "\e[33m-----------------------------------\033[0m"
 sleep 0.5
 clear
 wget https://raw.githubusercontent.com/hokagelegend9999/lite2/main/xray/ins-xray.sh && chmod +x ins-xray.sh && ./ins-xray.sh
-wget https://github.com/hokagelegend9999/lite2/blob/main/websocket/insshws.sh && chmod +x insshws.sh && ./insshws.sh
+wget https://raw.githubusercontent.com/hokagelegend9999/lite2/main/websocket/insshws.sh && chmod +x insshws.sh && ./insshws.sh
 clear
 #install ssh UDP SLOW DNS
 echo -e "\e[33m-----------------------------------\033[0m"
