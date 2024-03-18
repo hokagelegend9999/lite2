@@ -30,7 +30,7 @@
 # INSTALLASI AUTO SCRYPT LITE2
 
 ```
- wget https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/setup.sh && chmod +x setup.sh && sed -i -e 's/\r$//' setup.sh && screen -S setup ./setup.sh
+ wget https://raw.githubusercontent.com/hokagelegend9999/lite2/main/setup.sh && chmod +x setup.sh && sed -i -e 's/\r$//' setup.sh && screen -S setup ./setup.sh
 ```
 
 
