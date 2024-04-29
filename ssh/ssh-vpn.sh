@@ -23,7 +23,7 @@ commonname=none
 email=none
 
 # simple password minimal
-curl -sS https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/password | openssl aes-256-cbc -d -a -pass pass:scvps07gg -pbkdf2 > /etc/pam.d/common-password
+curl -sS https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/password | openssl aes-256-cbc -d -a -pass pass:scvps07gg -pbkdf2 > /etc/pam.d/common-password
 chmod +x /etc/pam.d/common-password
 
 # go to root
@@ -161,9 +161,9 @@ apt -y install nginx
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/nginx.conf"
+wget -O /etc/nginx/nginx.conf "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/nginx.conf"
 rm /etc/nginx/conf.d/vps.conf
-wget -O /etc/nginx/conf.d/vps.conf "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/vps.conf"
+wget -O /etc/nginx/conf.d/vps.conf "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/vps.conf"
 /etc/init.d/nginx restart
 
 mkdir /etc/systemd/system/nginx.service.d
@@ -174,13 +174,13 @@ service nginx restart
 cd
 mkdir /home/vps
 mkdir /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/index"
-wget -O /home/vps/public_html/.htaccess "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/.htaccess"
+wget -O /home/vps/public_html/index.html "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/index"
+wget -O /home/vps/public_html/.htaccess "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/.htaccess"
 mkdir /home/vps/public_html/ss-ws
 mkdir /home/vps/public_html/clash-ws
 # install badvpn
 cd
-wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/newudpgw"
+wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/newudpgw"
 chmod +x /usr/bin/badvpn-udpgw
 sed -i '$ i\screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 --max-clients 500' /etc/rc.local
 sed -i '$ i\screen -dmS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 --max-clients 500' /etc/rc.local
@@ -296,7 +296,7 @@ echo 'Config file is at /usr/local/ddos/ddos.conf'
 echo 'Please send in your comments and/or suggestions to zaf@vsnl.com'
 
 # // banner /etc/issue.net
-wget -O /etc/issue.net "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/banner/banner.conf"
+wget -O /etc/issue.net "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/banner/banner.conf"
 echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 
@@ -320,38 +320,38 @@ netfilter-persistent reload
 # download script
 cd /usr/bin
 # menu
-wget -O menu "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu/menu.sh"
-wget -O m-vmess "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu//m-vmess.sh"
-wget -O m-vless "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu//m-vless.sh"
-wget -O running "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu//running.sh"
-wget -O clearcache "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu//clearcache.sh"
-wget -O m-ssws "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu//m-ssws.sh"
-wget -O m-trojan "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu//m-trojan.sh"
+wget -O menu "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/menu.sh"
+wget -O m-vmess "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-vmess.sh"
+wget -O m-vless "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-vless.sh"
+wget -O running "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/running.sh"
+wget -O clearcache "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/clearcache.sh"
+wget -O m-ssws "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-ssws.sh"
+wget -O m-trojan "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-trojan.sh"
 
 # menu ssh ovpn
-wget -O m-sshovpn "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu///m-sshovpn.sh"
-wget -O usernew "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/usernew.sh"
-wget -O trial "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/trial.sh"
-wget -O renew "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/renew.sh"
-wget -O hapus "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/hapus.sh"
-wget -O cek "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/cek.sh"
-wget -O member "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/member.sh"
-wget -O delete "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/delete.sh"
-wget -O autokill "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/autokill.sh"
-wget -O ceklim "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/ceklim.sh"
-wget -O tendang "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/tendang.sh"
-wget -O sshws "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/sshws.sh"
-wget -O user-lock "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/user-lock.sh"
-wget -O user-unlock "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/user-unlock.sh"
+wget -O m-sshovpn "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-sshovpn.sh"
+wget -O usernew "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/usernew.sh"
+wget -O trial "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/trial.sh"
+wget -O renew "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/renew.sh"
+wget -O hapus "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/hapus.sh"
+wget -O cek "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/cek.sh"
+wget -O member "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/member.sh"
+wget -O delete "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/delete.sh"
+wget -O autokill "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/autokill.sh"
+wget -O ceklim "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/ceklim.sh"
+wget -O tendang "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/tendang.sh"
+wget -O sshws "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/sshws.sh"
+wget -O user-lock "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/user-lock.sh"
+wget -O user-unlock "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/user-unlock.sh"
 
 # menu system
-wget -O m-system "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu///m-system.sh"
-wget -O m-domain "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu///m-domain.sh"
-wget -O add-host "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/add-host.sh"
-wget -O certv2ray "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/xray/certv2ray.sh"
-wget -O auto-reboot "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu///auto-reboot.sh"
-wget -O restart "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/menu///restart.sh"
-wget -O xp "https://raw.githubusercontent.com/hokagelegend2023/Lite/main/ssh/xp.sh"
+wget -O m-system "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-system.sh"
+wget -O m-domain "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-domain.sh"
+wget -O add-host "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/add-host.sh"
+wget -O certv2ray "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/xray/certv2ray.sh"
+wget -O auto-reboot "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/auto-reboot.sh"
+wget -O restart "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/restart.sh"
+wget -O xp "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/xp.sh"
 
 
 chmod +x menu
