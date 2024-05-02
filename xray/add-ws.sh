@@ -69,7 +69,8 @@ while true; do
     "host": "",
     "tls": "tls"
 }
-EOF)
+EOF
+)
     ask=$(cat<<EOF
     {
     "v": "2",
@@ -84,7 +85,8 @@ EOF)
     "host": "",
     "tls": "none"
 }
-EOF)
+EOF
+)
     grpc=$(cat<<EOF
     {
     "v": "2",
@@ -99,19 +101,20 @@ EOF)
     "host": "",
     "tls": "tls"
 }
-EOF)
+EOF
+)
     vmess_base641=$(base64 -w 0 <<< $vmess_json1)
     vmess_base642=$(base64 -w 0 <<< $vmess_json2)
-    vmess_base643=$(base64 -w 0 <<< $vmess_json3)
-    vmesslink1="vmess://$(echo $asu | base64 -w 0)"
-    vmesslink2="vmess://$(echo $ask | base64 -w 0)"
-    vmesslink3="vmess://$(echo $grpc | base64 -w 0)"
-    systemctl restart xray > /dev/null 2>&1
-    service cron restart > /dev/null 2>&1
-    clear
-    echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
-    echo -e "\\E[0;41;36m        Vmess Account        \E[0m" | tee -a /etc/log-create-vmess.log
-    echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+    vmess_base643=$(base64 0 <<< $vmess_json3)
+vmesslink1="vmess://$(echo $asu | base64 -w 0)"
+vmesslink2="vmess://$(echo $ask | base64 -w 0)"
+vmesslink3="vmess://$(echo $grpc | base64 -w 0)"
+systemctl restart xray > /dev/null 2>&1
+service cron restart > /dev/null 2>&1
+clear
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "\E[0;41;36m Vmess Account \E[0m" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
 echo -e "Remarks : ${user}" | tee -a /etc/log-create-vmess.log
 echo -e "Domain : ${domain}" | tee -a /etc/log-create-vmess.log
 echo -e "Wildcard : (bug.com).${domain}" | tee -a /etc/log-create-vmess.log
@@ -132,7 +135,9 @@ echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━�
 echo -e "Link gRPC : ${vmesslink3}" | tee -a /etc/log-create-vmess.log
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
 echo -e "Expired On : $exp" | tee -a /etc/log-create-vmess.log
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
 echo "" | tee -a /etc/log-create-vmess.log
 read -n 1 -s -r -p "Press any key to back on menu"
 done
