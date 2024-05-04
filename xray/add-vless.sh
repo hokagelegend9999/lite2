@@ -77,8 +77,8 @@ while true; do
 echo -e "Remarks : ${user}" | tee -a /etc/log-create-vless.log
 echo -e "Domain : ${domain}" | tee -a /etc/log-create-vless.log
 echo -e "Wildcard : (bug.com).${domain}" | tee -a /etc/log-create-vless.log
-echo -e "Port TLS : $tls" | tee -a /etc/log-create-vless.log
-echo -e "Port none TLS : $none" | tee -a /etc/log-create-vless.log
+echo -e "Port TLS : 443 $tls" | tee -a /etc/log-create-vless.log
+echo -e "Port none TLS : 80$none" | tee -a /etc/log-create-vless.log
 echo -e "id : ${uuid}" | tee -a /etc/log-create-vless.log
 echo -e "Encryption : none" | tee -a /etc/log-create-vless.log
 echo -e "Network : ws" | tee -a /etc/log-create-vless.log
