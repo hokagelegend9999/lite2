@@ -327,6 +327,7 @@ wget -O running "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/m
 wget -O clearcache "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/clearcache.sh"
 wget -O m-ssws "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-ssws.sh"
 wget -O m-trojan "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-trojan.sh"
+wget -O add-tr "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/add-tr.sh"
 
 # menu ssh ovpn
 wget -O m-sshovpn "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-sshovpn.sh"
