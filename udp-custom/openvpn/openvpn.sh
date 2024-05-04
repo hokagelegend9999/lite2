@@ -2,7 +2,7 @@
 # =========================================
 # Quick Setup | Script Setup Manager
 # Edition : Lite 2 v.30
-# (C) Copyright 2023
+# (C) Copyright 2024
 # =========================================
 # pewarna hidup
 BGreen='\e[1;32m'
