@@ -1,8 +1,8 @@
 #!/bin/bash
 # =========================================
 # Quick Setup | Script Setup Manager
-# Edition : ECHO STABLE 2.0
-# (C) Copyright 2023
+# Edition : LITE 2
+# (C) Copyright 2024
 # =========================================
 # pewarna hidup
 BGreen='\e[1;32m'
@@ -16,10 +16,10 @@ rm -rf log-install.txt
 rm -rf /root/domain
 
 echo "\e[1;32m Proses Download Script Slowdns.. \e[0m"
-wget https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/slowdns/install-sldns && chmod +x install-sldns && ./install-sldns
+wget https://raw.githubusercontent.com/hokagelegend9999/lite2/main/slowdns/install-sldns && chmod +x install-sldns && ./install-sldns
 sleep 1
 echo "\e[1;32m Proses Download Script OpenVPN.. \e[0m"
-wget https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/udp-custom/openvpn/openvpn.sh && chmod +x openvpn.sh && ./openvpn.sh
+wget https://raw.githubusercontent.com/hokagelegend9999/lite2/main/udp-custom/openvpn/openvpn.sh && chmod +x openvpn.sh && ./openvpn.sh
 rm -rf /root/udp
 mkdir -p /root/udp
 # install udp-custom
@@ -37,7 +37,7 @@ clear
 echo "\e[1;32m Please Waiting Proses Downloading Toll UdpCustom.. \e[0m"
 sleep 1
 clear
-wget -q --show-progress --load-cookies /tmp/cookies.txt "https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/udp-custom/udp-custom-linux-amd64" -O /root/udp/udp-custom && rm -rf /tmp/cookies.txt
+wget -q --show-progress --load-cookies /tmp/cookies.txt "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/udp-custom/udp-custom-linux-amd64" -O /root/udp/udp-custom && rm -rf /tmp/cookies.txt
 chmod +x /root/udp/udp-custom
 clear
 # install Config Default Udp
@@ -55,13 +55,13 @@ clear
 echo "\e[1;32m Please Waiting Proses Downloading Default Config UdpCustom.. \e[0m"
 sleep 1
 clear
-wget -q --show-progress --load-cookies /tmp/cookies.txt "https://raw.githubusercontent.com/hokagelegend2023/Lite2/main/udp-custom/config.json" -O /root/udp/config.json && rm -rf /tmp/cookies.txt
+wget -q --show-progress --load-cookies /tmp/cookies.txt "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/udp-custom/config.json" -O /root/udp/config.json && rm -rf /tmp/cookies.txt
 chmod 644 /root/udp/config.json
 
 if [ -z "$1" ]; then
 cat <<EOF > /etc/systemd/system/udp-custom.service
 [Unit]
-Description=UDP Custom by MARDHEX
+Description=UDP Custom by HOKAGE LEGEND
 
 [Service]
 User=root
@@ -77,7 +77,7 @@ EOF
 else
 cat <<EOF > /etc/systemd/system/udp-custom.service
 [Unit]
-Description=UDP Custom by MARDHEX
+Description=UDP Custom by HOKAGE LEGEND
 
 [Service]
 User=root
@@ -108,7 +108,7 @@ echo "   - SSH SSL Websocket        : 443" | tee -a log-install.txt
 echo "   - Stunnel4                 : 222, 777" | tee -a log-install.txt
 echo "   - Dropbear                 : 109, 143" | tee -a log-install.txt
 echo "   - Badvpn                   : 7100-7900" | tee -a log-install.txt
-echo "   - Nginx                    : 81" | tee -a log-install.txt
+echo "   - Nginx                    : 86" | tee -a log-install.txt
 echo "   - Vmess WS TLS             : 443" | tee -a log-install.txt
 echo "   - Vless WS TLS             : 443" | tee -a log-install.txt
 echo "   - Trojan WS TLS            : 443" | tee -a log-install.txt
