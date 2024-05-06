@@ -1,5 +1,4 @@
 #!/bin/bash
-
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 echo "Checking VPS"
 clear
@@ -10,35 +9,26 @@ else
     domain=$IP
 fi
 
-# Function to count the number of IPs connected to the user
-count_ips() {
-    user_ips=$(netstat -tn | grep ESTABLISHED | grep xray | grep ":$1" | awk '{print $5}' | cut -d: -f1 | sort | uniq)
-    echo "$user_ips" | wc -l
-}
-
-# Function to set the maximum number of IPs
-set_max_ips() {
-    clear
-    echo "Choose IP Limit Option:"
-    echo "1. Set IP Limit"
-    echo "2. No IP Limit"
-    read -p "Your choice [1-2]: " ip_choice
-    case $ip_choice in
-        1) read -rp "Enter maximum number of IPs (max 5): " -e max_ips ;;
-        2) max_ips=0 ;;
-        *) echo "Invalid choice. Defaulting to no IP limit." ; max_ips=0 ;;
-    esac
-}
-
-while true; do
+tls="$(cat ~/log-install.txt | grep -w "Vmess WS TLS" | cut -d: -f2|sed 's/ //g')"
+none="$(cat ~/log-install.txt | grep -w "Vmess WS none TLS" | cut -d: -f2|sed 's/ //g')"
+until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${CLIENT_EXISTS} == '0' ]]; do
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo -e "\\E[0;41;36m      Add Vmess Account      \E[0m"
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    echo "1. Set IP Limit"
+    echo "2. No IP Limit"
+    read -rp "Your choice [1-2]: " ip_choice
+
+    case $ip_choice in
+        1) max_ips=5 ;;
+        2) max_ips=0 ;;
+        *) echo "Invalid choice. Defaulting to no IP limit." ; max_ips=0 ;;
+    esac
 
     read -rp "User: " -e user
-    CLIENT_EXISTS=$(grep -w "$user" /etc/xray/config.json | wc -l)
+    CLIENT_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l)
 
-    if [[ $CLIENT_EXISTS -eq '1' ]]; then
+    if [[ ${CLIENT_EXISTS} == '1' ]]; then
         clear
         echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
         echo -e "\\E[0;41;36m      Add Vmess Account      \E[0m"
@@ -50,36 +40,94 @@ while true; do
         read -n 1 -s -r -p "Press any key to back on menu"
         continue
     fi
+done
 
-    set_max_ips  # Call the function to set maximum number of IPs
+uuid=$(cat /proc/sys/kernel/random/uuid)
+read -p "Expired (days): " masaaktif
+exp=$(date -d "$masaaktif days" +"%Y-%m-%d")
+sed -i '/#vmess$/a\### '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
+exp=$(date -d "$masaaktif days" +"%Y-%m-%d")
+sed -i '/#vmessgrpc$/a\### '"$user $exp"'\
+},{"id": "'""$uuid""'","alterId": '"0"',"email": "'""$user""'"' /etc/xray/config.json
 
-    # Check if the number of IPs connected to the user exceeds the limit
-    if [[ $max_ips -gt 0 && $(count_ips "$user") -ge $max_ips ]]; then
-        clear
-        echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-        echo -e "\\E[0;41;36m      Add Vmess Account      \E[0m"
-        echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo ""
-echo "The number of IPs connected to the user exceeds the limit of $max_ips."
-echo ""
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+asu=$(cat<<EOF
+      {
+      "v": "2",
+      "ps": "${user}",
+      "add": "${domain}",
+      "port": "443",
+      "id": "${uuid}",
+      "aid": "0",
+      "net": "ws",
+      "path": "/vmess",
+      "type": "none",
+      "host": "",
+      "tls": "tls"
+}
+EOF)
+ask=$(cat<<EOF
+      {
+      "v": "2",
+      "ps": "${user}",
+      "add": "${domain}",
+      "port": "80",
+      "id": "${uuid}",
+      "aid": "0",
+      "net": "ws",
+      "path": "/vmess",
+      "type": "none",
+      "host": "",
+      "tls": "none"
+}
+EOF)
+grpc=$(cat<<EOF
+      {
+      "v": "2",
+      "ps": "${user}",
+      "add": "${domain}",
+      "port": "443",
+      "id": "${uuid}",
+      "aid": "0",
+      "net": "grpc",
+      "path": "vmess-grpc",
+      "type": "none",
+      "host": "",
+      "tls": "tls"
+}
+EOF)
+vmess_base641=$( base64 -w 0 <<< $asu)
+vmess_base642=$( base64 -w 0 <<< $ask)
+vmess_base643=$( base64 -w 0 <<< $grpc)
+vmesslink1="vmess://$(echo $asu | base64 -w 0)"
+vmesslink2="vmess://$(echo $ask | base64 -w 0)"
+vmesslink3="vmess://$(echo $grpc | base64 -w 0)"
+systemctl restart xray > /dev/null 2>&1
+service cron restart > /dev/null 2>&1
+clear
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "\\E[0;41;36m        Vmess Account        \E[0m" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "Remarks : ${user}" | tee -a /etc/log-create-vmess.log
+echo -e "Domain : ${domain}" | tee -a /etc/log-create-vmess.log
+echo -e "Wildcard : (bug.com).${domain}" | tee -a /etc/log-create-vmess.log
+echo -e "Port TLS : 443 ${tls}" | tee -a /etc/log-create-vmess.log
+echo -e "Port none TLS : 80 ${none}" | tee -a /etc/log-create-vmess.log
+echo -e "Port gRPC : ${tls}" | tee -a /etc/log-create-vmess.log
+echo -e "id : ${uuid}" | tee -a /etc/log-create-vmess.log
+echo -e "alterId : 0" | tee -a /etc/log-create-vmess.log
+echo -e "Security : auto" | tee -a /etc/log-create-vmess.log
+echo -e "Network : ws" | tee -a /etc/log-create-vmess.log
+echo -e "Path : /vmess" | tee -a /etc/log-create-vmess.log
+echo -e "ServiceName : vmess-grpc" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "Link TLS : ${vmesslink1}" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "Link none TLS : ${vmesslink2}" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "Link gRPC : ${vmesslink3}" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo -e "Expired On : $exp" | tee -a /etc/log-create-vmess.log
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m" | tee -a /etc/log-create-vmess.log
+echo "" | tee -a /etc/log-create-vmess.log
 read -n 1 -s -r -p "Press any key to back on menu"
-continue
-fi
-# Set the expiration date with month
-read -rp "Expired (yyyy-mm-dd): " -e expire_date
-expire_date_with_month=$(date -d "$expire_date" +"%Y-%m-%d")
-
-# Add user to xray config
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo "Adding User..."
-sleep 2
-echo -e "User: $user"
-echo -e "Max IPs: $max_ips"
-echo -e "Expired On: $expire_date_with_month"
-echo -e "User successfully added to xray config!"
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-# Add user to xray config here (replace with your logic)
-
-read -n 1 -s -r -p "Press any key to back on menu"
-
