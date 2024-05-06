@@ -329,7 +329,7 @@ wget -O m-ssws "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/me
 wget -O m-trojan "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-trojan.sh"
 wget -O add-tr "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/add-tr.sh"
 wget -O add-vless "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/xray/add-vless.sh"
-
+wget -O add-ws "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/xray/add-ws.sh"
 # menu ssh ovpn
 wget -O m-sshovpn "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-sshovpn.sh"
 wget -O usernew "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/usernew.sh"
@@ -358,6 +358,7 @@ wget -O xp "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/xp
 
 chmod +x menu
 chmod +x m-vmess
+chmod +x add-ws
 chmod +x m-vless
 chmod +x running
 chmod +x clearcache
