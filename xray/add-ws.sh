@@ -59,24 +59,27 @@ while true; do
         echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
         echo -e "\\E[0;41;36m      Add Vmess Account      \E[0m"
         echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-        echo ""
-        echo "The number of IPs connected to the user exceeds the limit of $max_ips."
-        echo ""
-        echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-        read -n 1 -s -r -p "Press any key to back on menu"
-        continue
-    fi
+echo ""
+echo "The number of IPs connected to the user exceeds the limit of $max_ips."
+echo ""
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+read -n 1 -s -r -p "Press any key to back on menu"
+continue
+fi
+# Set the expiration date with month
+read -rp "Expired (yyyy-mm-dd): " -e expire_date
+expire_date_with_month=$(date -d "$expire_date" +"%Y-%m-%d")
 
-    # Add user to xray config
-    echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo "Adding User..."
-    sleep 2
-    echo -e "User: $user"
-    echo -e "Max IPs: $max_ips"
-    echo -e "User successfully added to xray config!"
-    echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    # Add user to xray config here (replace with your logic)
+# Add user to xray config
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo "Adding User..."
+sleep 2
+echo -e "User: $user"
+echo -e "Max IPs: $max_ips"
+echo -e "Expired On: $expire_date_with_month"
+echo -e "User successfully added to xray config!"
+echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+# Add user to xray config here (replace with your logic)
 
-    read -n 1 -s -r -p "Press any key to back on menu"
-done
+read -n 1 -s -r -p "Press any key to back on menu"
 
