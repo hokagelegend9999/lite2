@@ -23,7 +23,8 @@
 - Shadowsocks gRPC         : 443<br>
 <br>
 
-## Update Auto Reboot jam 12 Malam
+## - Update Auto Reboot jam 12 Malam
+## - Update Maximal IP User & IP Unlimited
 
   
 
