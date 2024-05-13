@@ -186,6 +186,12 @@ clear
 wget https://raw.githubusercontent.com/hokagelegend2023/vpnpremium/main/udp-custom/udp.sh && chmod +x udp.sh && ./udp.sh
 clear
 sleep 0.5
+echo -e "\e[33m-----------------------------------\033[0m"
+echo -e "$BGreen   Auto Reboot 12 malam          $NC"
+echo -e "\e[33m-----------------------------------\033[0m"
+sudo sed -i '$ a\0 0 * * * /sbin/shutdown -r now' /etc/crontab
+clear
+sleep 0.5
 cat> /root/.profile << END
 # ~/.profile: executed by Bourne-compatible login shells.
 
