@@ -1,67 +1,139 @@
 #!/bin/bash
-# ==========================================
-# Color
-RED='\033[0;31m'
-NC='\033[0m'
-GREEN='\033[0;32m'
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
-LIGHT='\033[0;37m'
-CHATID=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 3)
-KEY=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 2)
-export TIME="10"
-export URL="https://api.telegram.org/bot$KEY/sendMessage"
-clear
-function notif_restore() {
-    sleep 2
-    CHATID="$CHATID"
-KEY="$KEY"
-TIME="$TIME"
-URL="$URL"
-TEXT="
-<code>◇━━━━━━━━━━━━━━◇</code>
-<b>  ⚠️ RESTORE NOTIF⚠️</b>
-<b>     Detail Restore VPS</b>
-<code>◇━━━━━━━━━━━━━━◇</code>
-<code>Restore Vps Done</code>
-<code>◇━━━━━━━━━━━━━━◇</code>
-"
 
-curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
+# Restore Script for HOKAGE VPN STORE
+# Created by: HOKAGE LEGEND
+# Version: 1.0
+# Description: This script restores user data from backup file
+
+# Colors
+red='\e[1;31m'
+green='\e[0;32m'
+yell='\e[1;33m'
+tyblue='\e[1;36m'
+NC='\e[0m'
+
+# Check if running as root
+if [ "${EUID}" -ne 0 ]; then
+    echo -e "${red}You need to run this script as root${NC}"
+    exit 1
+fi
+
+# Check if backup file exists
+if [ ! -f "/root/hokage_backup.tar.gz" ]; then
+    echo -e "${red}Backup file not found!${NC}"
+    echo -e "Please make sure hokage_backup.tar.gz is in /root directory"
+    exit 1
+fi
+
+# Restore function
+function restore_data() {
+    echo -e "${green}Starting restore process...${NC}"
+    
+    # Create temp directory
+    TEMP_DIR="/root/hokage_restore_temp"
+    mkdir -p $TEMP_DIR
+    
+    # Extract backup
+    echo -e "${yell}Extracting backup file...${NC}"
+    tar -xzvf /root/hokage_backup.tar.gz -C $TEMP_DIR > /dev/null 2>&1
+    
+    # Find the actual backup directory
+    BACKUP_DIR=$(find $TEMP_DIR -type d -name "hokage_backup_*" | head -n 1)
+    
+    if [ -z "$BACKUP_DIR" ]; then
+        echo -e "${red}Could not find backup data in the archive!${NC}"
+        rm -rf $TEMP_DIR
+        exit 1
+    fi
+    
+    echo -e "${green}Found backup data in: $BACKUP_DIR${NC}"
+    
+    # Restore user accounts
+    echo -e "${yell}Restoring user accounts...${NC}"
+    cp $BACKUP_DIR/etc/passwd /etc/
+    cp $BACKUP_DIR/etc/shadow /etc/
+    cp $BACKUP_DIR/etc/group /etc/
+    cp $BACKUP_DIR/etc/gshadow /etc/
+    
+    # Restore SSH configurations
+    echo -e "${yell}Restoring SSH data...${NC}"
+    rm -rf /etc/ssh
+    cp -r $BACKUP_DIR/etc/ssh /etc/
+    
+    if [ -d "$BACKUP_DIR/.ssh" ]; then
+        rm -rf /root/.ssh
+        cp -r $BACKUP_DIR/.ssh /root/
+        chmod 600 /root/.ssh/*
+    fi
+    
+    # Restore VPN configurations
+    echo -e "${yell}Restoring VPN configurations...${NC}"
+    [ -d "$BACKUP_DIR/etc/openvpn" ] && cp -r $BACKUP_DIR/etc/openvpn /etc/
+    [ -d "$BACKUP_DIR/etc/wireguard" ] && cp -r $BACKUP_DIR/etc/wireguard /etc/
+    
+    # Restore Xray/V2Ray configurations
+    echo -e "${yell}Restoring Xray/V2Ray configurations...${NC}"
+    [ -d "$BACKUP_DIR/etc/xray" ] && cp -r $BACKUP_DIR/etc/xray /etc/
+    [ -d "$BACKUP_DIR/etc/v2ray" ] && cp -r $BACKUP_DIR/etc/v2ray /etc/
+    
+    # Restore HOKAGE specific files
+    echo -e "${yell}Restoring HOKAGE specific files...${NC}"
+    [ -d "$BACKUP_DIR/etc/hokagevpn" ] && cp -r $BACKUP_DIR/etc/hokagevpn /etc/
+    [ -d "$BACKUP_DIR/var/lib/hokagevpn-pro" ] && cp -r $BACKUP_DIR/var/lib/hokagevpn-pro /var/lib/
+    [ -f "$BACKUP_DIR/var/lib/ipvps.conf" ] && cp $BACKUP_DIR/var/lib/ipvps.conf /var/lib/
+    [ -f "$BACKUP_DIR/usr/local/etc/"* ] && cp $BACKUP_DIR/usr/local/etc/* /usr/local/etc/
+    
+    # Restore domain information
+    echo -e "${yell}Restoring domain information...${NC}"
+    mkdir -p /etc/xray
+    mkdir -p /etc/v2ray
+    [ -f "$BACKUP_DIR/etc/xray/domain" ] && cp $BACKUP_DIR/etc/xray/domain /etc/xray/
+    [ -f "$BACKUP_DIR/etc/v2ray/domain" ] && cp $BACKUP_DIR/etc/v2ray/domain /etc/v2ray/
+    [ -f "$BACKUP_DIR/etc/xray/scdomain" ] && cp $BACKUP_DIR/etc/xray/scdomain /etc/xray/
+    [ -f "$BACKUP_DIR/etc/v2ray/scdomain" ] && cp $BACKUP_DIR/etc/v2ray/scdomain /etc/v2ray/
+    
+    # Restore log files
+    echo -e "${yell}Restoring log files...${NC}"
+    [ -f "$BACKUP_DIR/etc/log-create-ssh.log" ] && cp $BACKUP_DIR/etc/log-create-ssh.log /etc/
+    [ -f "$BACKUP_DIR/etc/log-create-vmess.log" ] && cp $BACKUP_DIR/etc/log-create-vmess.log /etc/
+    [ -f "$BACKUP_DIR/etc/log-create-vless.log" ] && cp $BACKUP_DIR/etc/log-create-vless.log /etc/
+    [ -f "$BACKUP_DIR/etc/log-create-trojan.log" ] && cp $BACKUP_DIR/etc/log-create-trojan.log /etc/
+    [ -f "$BACKUP_DIR/etc/log-create-shadowsocks.log" ] && cp $BACKUP_DIR/etc/log-create-shadowsocks.log /etc/
+    
+    # Restore cron jobs
+    if [ -f "$BACKUP_DIR/crontab_backup" ]; then
+        echo -e "${yell}Restoring cron jobs...${NC}"
+        crontab $BACKUP_DIR/crontab_backup
+    fi
+    
+    # Fix permissions
+    echo -e "${yell}Fixing permissions...${NC}"
+    chmod 600 /etc/shadow
+    chmod 600 /etc/gshadow
+    chmod 644 /etc/passwd
+    chmod 644 /etc/group
+    
+    # Cleanup
+    rm -rf $TEMP_DIR
+    
+    echo -e "${green}Restore completed successfully!${NC}"
+    echo -e "${tyblue}Please reboot your VPS to ensure all services work properly${NC}"
 }
-# ==========================================
-# Getting
+
+# Main menu
 clear
-echo "Silahkan Masukin Link Backupnya"
-read -rp "Link File: " -e url
-wget -O backup.zip "$url"
-unzip backup.zip
-rm -f backup.zip
-sleep 1
-echo Start Restore
-cd /root/backup
-cp passwd /etc/
-cp group /etc/
-cp shadow /etc/
-cp gshadow /etc/
-cp .bot.db /etc/bot/
-cp -r kyt /var/lib/
-cp -r xray /etc/
-cp -r html /var/www/
-cp crontab /etc/
-cp .ssh.db /etc/ssh/
-cp .vmess.db /etc/vmess/
-cp .vless.db /etc/vless/
-cp .trojan.db /etc/trojan/
-cp -rf qt/* /etc/limit
-cp -r limit /etc/kyt/
-cp -r vmess /etc/
-cp -r trojan /etc/
-cp -r vless /etc/
-notif_restore
-rm -rf /root/backup
-rm -f backup.zip
-reset
-echo ""
+echo -e "${tyblue}==================================${NC}"
+echo -e "${tyblue}    HOKAGE VPN RESTORE SCRIPT     ${NC}"
+echo -e "${tyblue}==================================${NC}"
+echo -e "This script will restore data from hokage_backup.tar.gz"
+echo -e ""
+echo -e "${red}WARNING: This will overwrite existing configurations!${NC}"
+echo -e ""
+read -p "Are you sure you want to continue? [y/N]: " confirm
+
+if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    restore_data
+else
+    echo -e "${red}Restore cancelled${NC}"
+    exit 0
+fi
