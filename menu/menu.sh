@@ -120,6 +120,7 @@ echo -e "\e[1;36m 2 \e[0m: Menu Vmess              \e[1;36m 7 \e[0m: Status Serv
 echo -e "\e[1;36m 3 \e[0m: Menu Vless              \e[1;36m 8 \e[0m: Clear RAM Cache"
 echo -e "\e[1;36m 4 \e[0m: Menu Trojan             \e[1;36m 9 \e[0m: Reboot VPS"
 echo -e "\e[1;36m 5 \e[0m: Menu Shadowsocks        \e[1;36m x \e[0m: Exit Script"
+echo -e "\e[1;36m 11 \e[0m: Backup/Restore"
 echo -e   ""
 echo -e "\e[1;33m -------------------------------------------------\e[0m"
 echo -e "\e[1;32m Client Name \e[0m: $Name"
@@ -139,6 +140,7 @@ case $opt in
 6) clear ; m-system ;;
 7) clear ; running ;;
 8) clear ; clearcache ;;
+11) clear ; m-backup ;;
 9) clear ; reboot ; /sbin/reboot ;;
 x) exit ;;
 *) echo "Anda salah tekan " ; sleep 1 ; menu ;;
