@@ -361,6 +361,9 @@ wget -O xp "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/xp
 
 
 chmod +x menu
+chmod +x m-bkp
+chmod +x backup
+chmod +x restore
 chmod +x m-vmess
 chmod +x add-ws
 chmod +x m-vless
