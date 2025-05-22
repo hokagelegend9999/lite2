@@ -1,4 +1,6 @@
-
+<p align="center">
+  <img src="https://github.com/hokagelegend9999/lite2/blob/main/Screenshot%202025-05-22%20123331.png?raw=true" alt="Tampilan Menu" width="600"/>
+</p>
 
 ## Service & Port:
 <br>
