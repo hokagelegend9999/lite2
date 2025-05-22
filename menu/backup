@@ -2,7 +2,7 @@
 
 # Backup Script for HOKAGE VPN STORE
 # Created by: HOKAGE LEGEND
-# Version: 1.0
+# Version: 1.1 (Fixed)
 # Description: This script backs up user data for migration to a new VPS
 
 # Colors
@@ -18,91 +18,111 @@ if [ "${EUID}" -ne 0 ]; then
     exit 1
 fi
 
-# Create backup directory
+# Create backup directory with timestamp
 BACKUP_DIR="/root/hokage_backup_$(date +"%Y%m%d_%H%M%S")"
-mkdir -p $BACKUP_DIR
-mkdir -p $BACKUP_DIR/etc
-mkdir -p $BACKUP_DIR/var/lib
-mkdir -p $BACKUP_DIR/usr/local/etc
+mkdir -p $BACKUP_DIR/{etc,var/lib,usr/local/etc,root}
 
-# Backup function
+# Backup function with error handling
 function backup_data() {
     echo -e "${green}Starting backup process...${NC}"
     
     # Backup user accounts
     echo -e "${yell}Backing up user accounts...${NC}"
-    cp -r /etc/passwd $BACKUP_DIR/etc/
-    cp -r /etc/shadow $BACKUP_DIR/etc/
-    cp -r /etc/group $BACKUP_DIR/etc/
-    cp -r /etc/gshadow $BACKUP_DIR/etc/
+    copy_with_check "/etc/passwd" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/shadow" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/group" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/gshadow" "$BACKUP_DIR/etc/"
     
     # Backup SSH keys and configurations
     echo -e "${yell}Backing up SSH data...${NC}"
-    cp -r /etc/ssh $BACKUP_DIR/etc/
-    cp -r /root/.ssh $BACKUP_DIR/
+    copy_with_check "/etc/ssh" "$BACKUP_DIR/etc/"
+    copy_with_check "/root/.ssh" "$BACKUP_DIR/root/"
     
     # Backup VPN configurations
     echo -e "${yell}Backing up VPN configurations...${NC}"
-    cp -r /etc/openvpn $BACKUP_DIR/etc/
+    copy_with_check "/etc/openvpn" "$BACKUP_DIR/etc/"
     
     # Backup Xray/V2Ray configurations
-
     echo -e "${yell}Backing up Xray/V2Ray configurations...${NC}"
-    cp -r /etc/xray $BACKUP_DIR/etc/
-    cp -r /etc/v2ray $BACKUP_DIR/etc/
+    copy_with_check "/etc/xray" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/v2ray" "$BACKUP_DIR/etc/"
     
     # Backup HOKAGE specific files
     echo -e "${yell}Backing up HOKAGE specific files...${NC}"
-    cp -r /etc/hokagevpn $BACKUP_DIR/etc/
-    cp -r /var/lib/hokagevpn-pro $BACKUP_DIR/var/lib/
-    cp -r /var/lib/ipvps.conf $BACKUP_DIR/var/lib/
-    cp -r /usr/local/etc/.$Name.ini $BACKUP_DIR/usr/local/etc/
+    copy_with_check "/etc/hokagevpn" "$BACKUP_DIR/etc/"
+    copy_with_check "/var/lib/hokagevpn-pro" "$BACKUP_DIR/var/lib/"
+    copy_with_check "/var/lib/ipvps.conf" "$BACKUP_DIR/var/lib/"
+    
+    # Try to backup .ini files if they exist
+    for ini_file in /usr/local/etc/*.ini; do
+        if [ -f "$ini_file" ]; then
+            copy_with_check "$ini_file" "$BACKUP_DIR/usr/local/etc/"
+        fi
+    done
     
     # Backup domain information
     echo -e "${yell}Backing up domain information...${NC}"
-    cp -r /etc/xray/domain $BACKUP_DIR/etc/xray/
-    cp -r /etc/v2ray/domain $BACKUP_DIR/etc/v2ray/
-    cp -r /etc/xray/scdomain $BACKUP_DIR/etc/xray/
-    cp -r /etc/v2ray/scdomain $BACKUP_DIR/etc/v2ray/
+    copy_with_check "/etc/xray/domain" "$BACKUP_DIR/etc/xray/"
+    copy_with_check "/etc/v2ray/domain" "$BACKUP_DIR/etc/v2ray/"
+    copy_with_check "/etc/xray/scdomain" "$BACKUP_DIR/etc/xray/"
+    copy_with_check "/etc/v2ray/scdomain" "$BACKUP_DIR/etc/v2ray/"
     
     # Backup log files
     echo -e "${yell}Backing up log files...${NC}"
-    cp -r /etc/log-create-ssh.log $BACKUP_DIR/etc/
-    cp -r /etc/log-create-vmess.log $BACKUP_DIR/etc/
-    cp -r /etc/log-create-vless.log $BACKUP_DIR/etc/
-    cp -r /etc/log-create-trojan.log $BACKUP_DIR/etc/
-    cp -r /etc/log-create-shadowsocks.log $BACKUP_DIR/etc/
+    copy_with_check "/etc/log-create-ssh.log" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/log-create-vmess.log" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/log-create-vless.log" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/log-create-trojan.log" "$BACKUP_DIR/etc/"
+    copy_with_check "/etc/log-create-shadowsocks.log" "$BACKUP_DIR/etc/"
     
     # Backup cron jobs
     echo -e "${yell}Backing up cron jobs...${NC}"
-    crontab -l > $BACKUP_DIR/crontab_backup
+    crontab -l > $BACKUP_DIR/crontab_backup 2>/dev/null || echo -e "${yell}Failed to backup crontab${NC}"
     
     # Create compressed archive
     echo -e "${yell}Creating compressed backup file...${NC}"
-    tar -czvf /root/hokage_backup.tar.gz $BACKUP_DIR > /dev/null 2>&1
+    if tar -czvf /root/hokage_backup.tar.gz $BACKUP_DIR > /dev/null 2>&1; then
+        echo -e "${green}Backup completed successfully!${NC}"
+        echo -e "${tyblue}Backup file created at: /root/hokage_backup.tar.gz${NC}"
+    else
+        echo -e "${red}Failed to create backup archive!${NC}"
+        exit 1
+    fi
     
     # Cleanup
     rm -rf $BACKUP_DIR
-    
-    echo -e "${green}Backup completed successfully!${NC}"
-    echo -e "${tyblue}Backup file created at: /root/hokage_backup.tar.gz${NC}"
 }
 
-# Restore function (for reference, to be used on new VPS)
+# Helper function to copy files with error checking
+function copy_with_check() {
+    local src=$1
+    local dest=$2
+    
+    if [ -e "$src" ]; then
+        if ! cp -r "$src" "$dest" 2>/dev/null; then
+            echo -e "${yell}Warning: Failed to copy $src${NC}"
+        fi
+    else
+        echo -e "${yell}Warning: $src does not exist, skipping...${NC}"
+    fi
+}
+
+# Restore instructions
 function restore_instructions() {
     echo -e "\n${tyblue}===== RESTORE INSTRUCTIONS =====${NC}"
     echo -e "To restore this backup on a new VPS:"
     echo -e "1. Copy the backup file to the new VPS"
     echo -e "2. Extract it: ${green}tar -xzvf hokage_backup.tar.gz${NC}"
-    echo -e "3. Run the restore script that will be included in the backup"
-    echo -e "4. Or manually copy files to their respective locations"
-    echo -e "Note: Make sure to install all required packages first${NC}"
+    echo -e "3. Run the restore script (if included)"
+    echo -e "4. Or manually copy files to their original locations"
+    echo -e "Note: Install all required packages before restoring${NC}"
 }
 
 # Main menu
 clear
 echo -e "${tyblue}==================================${NC}"
 echo -e "${tyblue}    HOKAGE VPN BACKUP SCRIPT      ${NC}"
+echo -e "${tyblue}         (Fixed Version)          ${NC}"
 echo -e "${tyblue}==================================${NC}"
 echo -e "${green}1. Backup all user data${NC}"
 echo -e "${green}2. Show restore instructions${NC}"
