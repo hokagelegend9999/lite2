@@ -140,7 +140,7 @@ case $opt in
 6) clear ; m-system ;;
 7) clear ; running ;;
 8) clear ; clearcache ;;
-11) clear ; m-backup ;;
+11) clear ; m-bkp ;;
 9) clear ; reboot ; /sbin/reboot ;;
 x) exit ;;
 *) echo "Anda salah tekan " ; sleep 1 ; menu ;;
