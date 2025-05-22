@@ -44,9 +44,9 @@ function backup_data() {
     # Backup VPN configurations
     echo -e "${yell}Backing up VPN configurations...${NC}"
     cp -r /etc/openvpn $BACKUP_DIR/etc/
-    cp -r /etc/wireguard $BACKUP_DIR/etc/
     
     # Backup Xray/V2Ray configurations
+
     echo -e "${yell}Backing up Xray/V2Ray configurations...${NC}"
     cp -r /etc/xray $BACKUP_DIR/etc/
     cp -r /etc/v2ray $BACKUP_DIR/etc/
