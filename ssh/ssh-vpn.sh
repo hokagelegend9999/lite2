@@ -321,6 +321,9 @@ netfilter-persistent reload
 cd /usr/bin
 # menu
 wget -O menu "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/menu.sh"
+wget -O m-bkp "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-bkp"
+wget -O backup "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/backup"
+wget -O restore "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/restore"
 wget -O m-vmess "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-vmess.sh"
 wget -O m-vless "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-vless.sh"
 wget -O running "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/running.sh"
@@ -330,6 +333,7 @@ wget -O m-trojan "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/
 wget -O add-tr "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/add-tr.sh"
 wget -O add-vless "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/xray/add-vless.sh"
 wget -O add-ws "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/xray/add-ws.sh"
+
 # menu ssh ovpn
 wget -O m-sshovpn "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-sshovpn.sh"
 wget -O usernew "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/ssh/usernew.sh"
