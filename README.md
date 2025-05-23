@@ -29,14 +29,14 @@
 ## - Update Maximal IP User & IP Unlimited
 
   
-### setelah REBOOT pakai port di bawah ini :
+## setelah REBOOT pakai port di bawah ini :
 
-Port 500
-Port 40000
-Port 81
-Port51443
-Port 58080
-Port 666
+- Port 500
+- Port 40000
+- Port 81
+- Port51443
+- Port 58080
+- Port 666
 
 # INSTALLASI AUTO SCRYPT LITE2
 
