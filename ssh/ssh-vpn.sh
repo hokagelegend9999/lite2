@@ -321,6 +321,7 @@ netfilter-persistent reload
 cd /usr/bin
 # menu
 wget -O menu "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/menu.sh"
+wget -O cek "https://raw.githubusercontent.com/hokagelegend9999/lite2/refs/heads/main/menu/cek"
 wget -O m-bkp "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/m-bkp"
 wget -O backup "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/backup"
 wget -O restore "https://raw.githubusercontent.com/hokagelegend9999/lite2/main/menu/restore"
